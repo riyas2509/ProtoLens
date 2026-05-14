@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'createdAt']) &&
+             data.uid == request.auth.uid &&
+             data.email is string && data.email.size() <= 256 &&
+             data.createdAt == request.time;
+    }
+
+    function isValidAnalysis(data) {
+      return data.keys().hasAll(['userId', 'title', 'createdAt', 'status']) &&
+             data.userId == request.auth.uid &&
+             data.title is string && data.title.size() <= 200 &&
+             data.createdAt is timestamp &&
+             data.status in ['pending', 'completed', 'failed'] &&
+             (data.keys().hasAny(['isSaved']) ? data.isSaved is bool : true) &&
+             (data.keys().hasAny(['isPublic']) ? data.isPublic is bool : true) &&
+             (data.keys().hasAny(['inputTypes']) ? data.inputTypes is list : true) &&
+             (data.keys().hasAny(['result']) ? data.result is map : true);
+    }
+
+    // Helper for connection test
+    match /test/connection {
+      allow get: if true;
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && 
+                      incoming().uid == userId &&
+                      incoming().createdAt == request.time;
+      allow update: if isOwner(userId) && 
+                      incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'updatedAt']) &&
+                      (incoming().keys().hasAny(['updatedAt']) ? incoming().updatedAt == request.time : true);
+    }
+
+    // Analyses
+    match /analyses/{analysisId} {
+      allow get: if isOwner(existing().userId) || existing().get('isPublic', false) == true;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(analysisId) && isValidAnalysis(incoming()) && incoming().createdAt == request.time;
+      allow update: if isSignedIn() && isOwner(existing().userId) && isValidAnalysis(incoming()) && (
+        // Action: Complete Analysis
+        (incoming().diff(existing()).affectedKeys().hasOnly(['result', 'status', 'inputTypes'])) ||
+        // Action: Mark Failure
+        (incoming().diff(existing()).affectedKeys().hasOnly(['status'])) ||
+        // Action: Save/Unsave Analysis
+        (incoming().diff(existing()).affectedKeys().hasOnly(['isSaved'])) ||
+        // Action: Update Title
+        (incoming().diff(existing()).affectedKeys().hasOnly(['title'])) ||
+        // Action: Toggle Public
+        (incoming().diff(existing()).affectedKeys().hasOnly(['isPublic']))
+      );
+      allow delete: if isOwner(existing().userId);
+    }
+  }
+}

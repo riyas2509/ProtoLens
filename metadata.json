@@ -1,0 +1,13 @@
+{
+  "name": "ProtoLens",
+  "description": "AI Product Intelligence System that evaluates idea viability, UX quality, market potential, and technical feasibility through multimodal analysis.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "multimodal_analysis",
+    "product_strategy",
+    "ux_critique"
+  ]
+}

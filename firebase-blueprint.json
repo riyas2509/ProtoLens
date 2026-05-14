@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Analysis": {
+      "title": "Product Analysis",
+      "description": "A complete product intelligence report",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "inputTypes": { "type": "array", "items": { "type": "string" } },
+        "mediaUrls": { "type": "array", "items": { "type": "string" } },
+        "result": {
+          "type": "object",
+          "properties": {
+            "biggestFriction": { "type": "string" },
+            "understanding": { "type": "string" },
+            "betaSimulation": { "type": "string" },
+            "criticalProblems": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "priority": { "type": "string" },
+                  "problem": { "type": "string" },
+                  "impact": { "type": "string" },
+                  "fix": { "type": "string" }
+                }
+              }
+            },
+            "marketValidation": { "type": "string" },
+            "feasibilityAnalysis": { "type": "string" },
+            "lessGenericAnalysis": { "type": "string" },
+            "nextActions": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "isSaved": { "type": "boolean" },
+        "isPublic": { "type": "boolean" }
+      },
+      "required": ["userId", "title"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profile data"
+    },
+    "analyses/{analysisId}": {
+      "schema": "Analysis",
+      "description": "Product analysis reports"
+    }
+  }
+}

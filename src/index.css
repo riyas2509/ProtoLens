@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  body {
+    @apply antialiased text-neutral-900 bg-white;
+  }
+}
+
+@layer components {
+  .prose {
+    @apply leading-relaxed;
+  }
+  .prose p {
+    @apply mb-4;
+  }
+  .prose h1, .prose h2, .prose h3 {
+    @apply font-medium tracking-tight mt-6 mb-4 text-black;
+  }
+  .prose ul {
+    @apply list-disc list-inside mb-4 space-y-1;
+  }
+  .prose ol {
+    @apply list-decimal list-inside mb-4 space-y-1;
+  }
+}
