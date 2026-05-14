@@ -1,20 +1,60 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🧠 ProtoLens
 
-# Run and deploy your AI Studio app
+> Stop Guessing. Know What’s Wrong With Your Product.
 
-This contains everything you need to run your app locally.
+ProtoLens is an AI-powered beta user and product intelligence platform that analyzes product ideas, UI screens, prototypes, videos, and app flows to identify usability issues, UX friction, market viability, originality, and feasibility.
 
-View your app in AI Studio: https://ai.studio/apps/64d793bc-ae57-45d3-97f3-03caff5643d1
+Instead of generating products, ProtoLens focuses on evaluating and improving them.
 
-## Run Locally
+It simulates real user behavior, critiques products like a UX expert and strategist, and provides structured, actionable feedback to help founders, designers, students, and indie builders create products that actually work.
 
-**Prerequisites:**  Node.js
+---
 
+# 🚀 What ProtoLens Does
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+ProtoLens acts like:
+
+- 🧪 A real beta user
+- 🎨 A UX/UI reviewer
+- 🧠 A product strategist
+- 📈 A market evaluator
+- ⚙️ A feasibility analyst
+
+It helps users answer:
+
+- Does this product actually make sense?
+- Will users understand it?
+- Is the flow confusing?
+- Is the idea original?
+- Is there real market demand?
+- Is this realistically buildable?
+- What should be improved next?
+
+---
+
+# 🎯 Core Problem
+
+Modern AI tools made building products easy.
+
+But they created a new problem:
+
+> People can generate products quickly, but they struggle to evaluate quality.
+
+Most builders don’t know:
+
+- what’s wrong with their UI
+- where users will get confused
+- whether their idea is differentiated
+- whether the market actually needs it
+- what to prioritize next
+
+Current workflow:
+
+```text
+Build → Guess → Ask People → Rebuild
+```
+
+ProtoLens replaces this with:
+
+```text
+Build → Analyze → Understand → Improve
